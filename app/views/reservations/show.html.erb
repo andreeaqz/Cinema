@@ -1,0 +1,9 @@
+<h1>Reservations#show</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  Nume: <%= @user.nume %> <br>
+  Film: <%= @film.title %> <br>
+  Date: <%= Time.at(@running_film.time.to_i).to_datetime %> <br>
+  </div>
+</div>

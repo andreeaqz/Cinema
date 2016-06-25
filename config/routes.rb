@@ -1,8 +1,21 @@
 Rails.application.routes.draw do
-  
+
+  root   'films#index'
   get    'login'   => 'sessions#new'
   post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
+
+  get 'newfilm'   => 'films#new'
+  post 'newfilm'  => 'films#create'
+  delete 'deletefilm' => 'films#destroy'
+
+  get 'reservationnew' => 'reservations#new'
+  post 'reservationnew' => 'reservations#create'
+  get 'reservationshow' => 'reservations#show'
+  get 'selectseats' => 'reservations#new_select_seats'
+  post 'selectseats' => 'reservations#new_select_seats'
+  get 'adduserinfo' => 'reservations#add_user_info'
+  post 'adduserinfo' => 'reservations#add_user_info'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

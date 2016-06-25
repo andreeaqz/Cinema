@@ -1,0 +1,20 @@
+<h1>Films#index</h1>
+
+<% if @running_films_this_week %>
+<ul class="users">
+  <% @running_films_this_week.each do |rf| %>
+    <li>
+      <%= rf.film.title %>
+      <% if logged_in? %>
+      	<%= link_to 'Delete', deletefilm_path(:id => rf.film.id, :rf_id => rf.id), :method => :delete %>
+      <% else %>
+        <%= link_to 'Select', reservationnew_path(:id => rf.id) %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<% if logged_in? %>
+    <%= link_to 'Add Film', newfilm_path %>
+<% end %>
+<% end %>

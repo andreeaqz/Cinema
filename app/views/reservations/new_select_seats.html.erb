@@ -1,0 +1,20 @@
+<h1>Reservations#new <%= @film_id %></h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  <%= form_for(@reservation, url: adduserinfo_path) do |f| %>
+  <table>
+  		<tbody>
+  		<tr>
+  			<td><%= hidden_field_tag "reservation_seats[0]", '0' %>
+  			<%= check_box_tag "reservation_seats[0]", '1' %></td>
+  			<td><%= hidden_field_tag "reservation_seats[1]", '0' %>
+  			<%= check_box_tag "reservation_seats[1]", '1' %></td>
+  		</tr>
+  		</tbody>
+  </table>
+  <%= hidden_field_tag "reservation_rf_id", @reservation.running_film_id %>
+  <%= f.submit %>
+  <% end %>
+  </div>
+</div>

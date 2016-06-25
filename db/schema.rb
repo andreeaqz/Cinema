@@ -11,7 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160618205854) do
+ActiveRecord::Schema.define(version: 20160620065956) do
+
+  create_table "films", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.integer  "running_film_id"
+    t.integer  "user_id"
+    t.string   "seats"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "running_films", force: :cascade do |t|
+    t.integer  "film_id"
+    t.string   "time"
+    t.string   "seats",      default: "--- []\n"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "nume"
