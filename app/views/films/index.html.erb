@@ -1,5 +1,6 @@
-<h1>Films#index</h1>
+<h1>Filme</h1>
 
+<h3>Saptamana curenta:</h3>
 <% if @running_films_this_week %>
 <ul class="users">
   <% @running_films_this_week.each do |rf| %>
@@ -13,8 +14,25 @@
     </li>
   <% end %>
 </ul>
+<% end %>
+
+<h3>Saptamana viitoare:</h3>
+<% if @running_films_next_week %>
+<ul class="users">
+  <% @running_films_next_week.each do |rf| %>
+    <li>
+      <%= rf.film.title %>
+      <% if logged_in? %>
+      	<%= link_to 'Delete', deletefilm_path(:id => rf.film.id, :rf_id => rf.id), :method => :delete %>
+      <% else %>
+        <%= link_to 'Select', reservationnew_path(:id => rf.id) %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+<% end %>
 
 <% if logged_in? %>
+	<br>
     <%= link_to 'Add Film', newfilm_path %>
-<% end %>
 <% end %>

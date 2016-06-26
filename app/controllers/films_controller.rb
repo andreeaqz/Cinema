@@ -4,10 +4,10 @@ class FilmsController < ApplicationController
   def index
   	@current_time = Time.now
   	@running_films_this_week = RunningFilm.where(:time => 
-  		@current_time.at_beginning_of_week.to_i.to_s..@current_time.at_end_of_week.to_i.to_s)
+  		@current_time.at_beginning_of_week.to_i.to_s..@current_time.at_end_of_week.to_i.to_s).to_a.uniq {|rf| rf.film_id}
   	@next_week_time = Time.now + 7.days
   	@running_films_next_week = RunningFilm.where(:time => 
-  		@next_week_time.at_beginning_of_week.to_i.to_s..@next_week_time.at_end_of_week.to_i.to_s)
+  		@next_week_time.at_beginning_of_week.to_i.to_s..@next_week_time.at_end_of_week.to_i.to_s).to_a.uniq {|rf| rf.film_id}
   end
 
   def show
@@ -24,9 +24,15 @@ class FilmsController < ApplicationController
       # Handle a successful save.
       flash[:success] = "Film saved!"
 
-      rf = RunningFilm.new( film_id: @film.id, time: Time.now.to_i.to_s, seats: Array.new(100){0} )
-      if rf.save
-      	redirect_to films_path
+      rf1 = RunningFilm.new( film_id: @film.id, time: (Time.now + 1.day).to_i.to_s, seats: Array.new(100){0} )
+      rf2 = RunningFilm.new( film_id: @film.id, time: (Time.now + 3.days).to_i.to_s, seats: Array.new(100){0} )
+      rf3 = RunningFilm.new( film_id: @film.id, time: (Time.now + 5.days).to_i.to_s, seats: Array.new(100){0} )
+      rf4 = RunningFilm.new( film_id: @film.id, time: (Time.now + 7.days).to_i.to_s, seats: Array.new(100){0} )
+      rf5 = RunningFilm.new( film_id: @film.id, time: (Time.now + 9.days).to_i.to_s, seats: Array.new(100){0} )
+      rf6 = RunningFilm.new( film_id: @film.id, time: (Time.now + 11.days).to_i.to_s, seats: Array.new(100){0} )
+
+      if rf1.save && rf2.save && rf3.save && rf4.save && rf5.save && rf6.save
+      	redirect_to root_url
       else
       	render 'new'
       end

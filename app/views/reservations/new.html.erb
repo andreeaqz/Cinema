@@ -1,12 +1,13 @@
-<h1>Reservations#new <%= @film_id %></h1>
+<h1>Rezervare: selecteaza data si ora filmului</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
+  Film: <%= @film.title %> <br><br>
 	<%= form_for(@reservation, url: selectseats_path) do |f| %>
-		<%= f.label :running_film_id %>
+		<%= f.label "Data si ora" %>
 		<%= f.collection_select(:running_film_id, @rf, :id, :date_time) %>
 
-		<%= f.submit %>
+		<%= f.submit "Pasul urmator" %>
 	<% end %>
   </div>
 </div>

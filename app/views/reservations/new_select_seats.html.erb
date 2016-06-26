@@ -1,16 +1,25 @@
-<h1>Reservations#new <%= @film_id %></h1>
+<h1>Rezervare: selecteaza locurile</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
+  *Legenda: locurile insemnate cu X sunt deja rezervate<br>
   <%= form_for(@reservation, url: adduserinfo_path) do |f| %>
   <table>
+  		<thead>----------[Ecran]----------</thead>
   		<tbody>
+  		<% (0..9).each do |irow| %>
   		<tr>
-  			<td><%= hidden_field_tag "reservation_seats[0]", '0' %>
-  			<%= check_box_tag "reservation_seats[0]", '1' %></td>
-  			<td><%= hidden_field_tag "reservation_seats[1]", '0' %>
-  			<%= check_box_tag "reservation_seats[1]", '1' %></td>
+  			<td><%= irow+1 %>.</td>
+  			<% (0..9).each do |icolumn| %>
+  				<td><%= hidden_field_tag "reservation_seats[" + (irow*10 + icolumn).to_s + "]", '0' %>
+  				<% if @reservation.seats[irow*10 + icolumn]==0 %>
+  					<%= check_box_tag "reservation_seats[" + (irow*10 + icolumn).to_s + "]", '1' %></td>
+  				<% else %>
+  					X
+  				<% end %>
+  			<% end %>
   		</tr>
+  		<% end %>
   		</tbody>
   </table>
   <%= hidden_field_tag "reservation_rf_id", @reservation.running_film_id %>

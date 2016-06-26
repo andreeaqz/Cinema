@@ -1,9 +1,26 @@
-<h1>Reservations#show</h1>
+<h1>Confirmare rezervare</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
   Nume: <%= @user.nume %> <br>
   Film: <%= @film.title %> <br>
-  Date: <%= Time.at(@running_film.time.to_i).to_datetime %> <br>
+  Date: <%= Time.at(@running_film.time.to_i).to_datetime %> <br><br>
+  </div>
+  <div class="col-md-6 col-md-offset-3">
+  Locuri(R = rezervat):<br>
+  		<% (0..9).each do |irow| %>
+  			<% (0..9).each do |icolumn| %>
+  				<% if @reservation.seats[irow*10 + icolumn]==0 %>
+  					O
+  				<% else %>
+  					R
+  				<% end %>
+  			<% end %>
+  		<br>
+  		<% end %>
+  </div>
+  <br>
+  <div class="col-md-6 col-md-offset-3">
+  <h3>Te asteptam la film!</h3>
   </div>
 </div>
