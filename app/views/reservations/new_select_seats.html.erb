@@ -11,7 +11,7 @@
   		<tr>
   			<td><%= irow+1 %>.</td>
   			<% (0..9).each do |icolumn| %>
-  				<td><%= hidden_field_tag "reservation_seats[" + (irow*10 + icolumn).to_s + "]", '0' %>
+  				<td style="width:15px"><%= hidden_field_tag "reservation_seats[" + (irow*10 + icolumn).to_s + "]", '0' %>
   				<% if @reservation.seats[irow*10 + icolumn]==0 %>
   					<%= check_box_tag "reservation_seats[" + (irow*10 + icolumn).to_s + "]", '1' %>
   				<% else %>
