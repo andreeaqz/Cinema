@@ -85,6 +85,13 @@ class FilmsController < ApplicationController
     end
     last_two = ordered_four.last(number_of_films_left_behind)
 
+    if last_two.length > 0
+      Film.where(:id => last_two[0].id).update_attributes({:tobedeleted => 1})
+    end 
+    if last_two.length > 1
+      Film.where(:id => last_two[1].id).update_attributes({:tobedeleted => 1})
+    end
+
     if top_two.length > 0
       RunningFilm.all[20].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[0].id})
       RunningFilm.all[25].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[0].id})
@@ -113,6 +120,17 @@ class FilmsController < ApplicationController
       RunningFilm.all[34].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[5].id})
     end
 
+    redirect_to root_url
+  end
+
+
+  def delete_old_films
+    films_to_be_deleted = Film.where(tobedeleted: 1)
+    films_to_be_deleted.each do |ftbd|
+      if RunningFilm.where(film_id: ftbd.id).length == 0
+        ftbd.destroy
+      end
+    end
     redirect_to root_url
   end
 

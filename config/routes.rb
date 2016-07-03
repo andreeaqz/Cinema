@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   post 'adduserinfo' => 'reservations#add_user_info'
 
   post 'filmreschedule' => 'films#reschedule'
+  post 'deleteoldfilms' => 'films#delete_old_films'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

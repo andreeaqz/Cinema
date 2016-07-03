@@ -2,6 +2,7 @@
 
 <% if logged_in? %>
   <%= button_to "Reprogramare", filmreschedule_path %>
+  <%= button_to "Elimina filme vechi", deleteoldfilms_path %>
 <% end %>
 
 <h3>Saptamana curenta:</h3>
