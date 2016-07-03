@@ -86,10 +86,10 @@ class FilmsController < ApplicationController
     last_two = ordered_four.last(number_of_films_left_behind)
 
     if last_two.length > 0
-      Film.where(:id => last_two[0].id).update_attributes({:tobedeleted => 1})
+      Film.where(:id => last_two[0].id)[0].update_attributes({:tobedeleted => 1})
     end 
     if last_two.length > 1
-      Film.where(:id => last_two[1].id).update_attributes({:tobedeleted => 1})
+      Film.where(:id => last_two[1].id)[0].update_attributes({:tobedeleted => 1})
     end
 
     if top_two.length > 0
