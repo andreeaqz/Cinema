@@ -4,7 +4,7 @@ class RunningFilmsController < ApplicationController
   end
 
   def show
-  	@runningfilm = RunningFilm.find( params[:id] )
+  	@runningfilm = RunningFilm.where(:film_id=>params[:id]).where("time > ?", Time.now.to_i.to_s)
   	@film = @runningfilm.film
   end
 end

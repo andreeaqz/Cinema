@@ -4,7 +4,7 @@ class FilmsController < ApplicationController
   def index
   	@current_time = Time.now
   	@running_films_this_week = RunningFilm.where(:time => 
-  		@current_time.at_beginning_of_week.to_i.to_s..@current_time.at_end_of_week.to_i.to_s).to_a.uniq {|rf| rf.film_id}
+  		@current_time.to_i.to_s..@current_time.at_end_of_week.to_i.to_s).to_a.uniq {|rf| rf.film_id}
   	@next_week_time = Time.now + 7.days
   	@running_films_next_week = RunningFilm.where(:time => 
   		@next_week_time.at_beginning_of_week.to_i.to_s..@next_week_time.at_end_of_week.to_i.to_s).to_a.uniq {|rf| rf.film_id}
@@ -24,28 +24,96 @@ class FilmsController < ApplicationController
       # Handle a successful save.
       flash[:success] = "Film saved!"
 
-      rf1 = RunningFilm.new( film_id: @film.id, time: (Time.now + 1.day).to_i.to_s, seats: Array.new(100){0} )
-      rf2 = RunningFilm.new( film_id: @film.id, time: (Time.now + 3.days).to_i.to_s, seats: Array.new(100){0} )
-      rf3 = RunningFilm.new( film_id: @film.id, time: (Time.now + 5.days).to_i.to_s, seats: Array.new(100){0} )
-      rf4 = RunningFilm.new( film_id: @film.id, time: (Time.now + 7.days).to_i.to_s, seats: Array.new(100){0} )
-      rf5 = RunningFilm.new( film_id: @film.id, time: (Time.now + 9.days).to_i.to_s, seats: Array.new(100){0} )
-      rf6 = RunningFilm.new( film_id: @film.id, time: (Time.now + 11.days).to_i.to_s, seats: Array.new(100){0} )
+      if Film.all.length < 5
+        if Film.all.length == 1
+          print "\n\n\n\n\n\n\n\n"
+          print @film.id
+          print "\n\n\n\n\n\n\n\n"
 
-      if rf1.save && rf2.save && rf3.save && rf4.save && rf5.save && rf6.save
-      	redirect_to root_url
-      else
-      	render 'new'
+          RunningFilm.all[0].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[5].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[10].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[15].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[16].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          
+        elsif Film.all.length == 2
+          RunningFilm.all[1].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[6].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[11].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[12].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[17].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          
+        elsif Film.all.length == 3
+          RunningFilm.all[2].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[7].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[8].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[13].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[18].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          
+        elsif Film.all.length == 4
+          RunningFilm.all[3].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[4].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[9].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[14].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+          RunningFilm.all[19].update_attributes({:seats => Array.new(100){0}, :film_id => @film.id})
+        end 
       end
+      reschedule
     else
-      render 'new'
+      root_url newfilm_path
     end
   end
 
   def destroy
-  	# RunningFilm.find(params[:rf_id]).destroy
-  	Film.find(params[:id]).destroy
+  	RunningFilm.where( :film_id => params[:id] ).each do |rf|
+        rf.seats = Array.new(100) {0}
+        rf.film_id = nil
+        rf.save
+      end
+
+    Film.find(params[:id]).destroy
 
   	redirect_to :back
+  end
+
+  def reschedule
+    ordered_four = Film.first(4).sort { |a,b| a.rank <=> b.rank }
+    top_two = ordered_four.first(2)
+    number_of_films_left_behind = ordered_four.length - 2
+    if number_of_films_left_behind < 0
+      number_of_films_left_behind = 0
+    end
+    last_two = ordered_four.last(number_of_films_left_behind)
+
+    if top_two.length > 0
+      RunningFilm.all[20].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[0].id})
+      RunningFilm.all[25].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[0].id})
+      RunningFilm.all[30].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[0].id})
+      RunningFilm.all[35].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[0].id})
+    end
+
+    if top_two.length > 1
+      RunningFilm.all[21].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[1].id})
+      RunningFilm.all[26].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[1].id})
+      RunningFilm.all[31].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[1].id})
+      RunningFilm.all[32].update_attributes({:seats => Array.new(100){0}, :film_id => top_two[1].id})
+    end
+
+    if Film.all.length > 4
+      RunningFilm.all[22].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[4].id})
+      RunningFilm.all[27].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[4].id})
+      RunningFilm.all[28].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[4].id})
+      RunningFilm.all[33].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[4].id})
+    end
+
+    if Film.all.length > 5
+      RunningFilm.all[23].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[5].id})
+      RunningFilm.all[24].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[5].id})
+      RunningFilm.all[29].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[5].id})
+      RunningFilm.all[34].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[5].id})
+    end
+
+    redirect_to root_url
   end
 
   private

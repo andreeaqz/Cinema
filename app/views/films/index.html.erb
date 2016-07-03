@@ -1,12 +1,21 @@
 <h1>Filme</h1>
 
+<% if logged_in? %>
+  <%= button_to "Reprogramare", filmreschedule_path %>
+<% end %>
+
 <h3>Saptamana curenta:</h3>
 <% if @running_films_this_week %>
 <ul class="users">
   <% @running_films_this_week.each do |rf| %>
+    <% if rf.film == nil %>
+      <% next %>
+    <% end %>
+    
     <li>
       <%= rf.film.title %>
       <% if logged_in? %>
+       &nbsp | locuri rezervate: <%= rf.film.rank %> &nbsp
       	<%= link_to 'Delete', deletefilm_path(:id => rf.film.id, :rf_id => rf.id), :method => :delete %>
       <% else %>
         <%= link_to 'Select', reservationnew_path(:id => rf.id) %>
@@ -20,9 +29,14 @@
 <% if @running_films_next_week %>
 <ul class="users">
   <% @running_films_next_week.each do |rf| %>
+    <% if rf.film == nil %>
+      <% next %>
+    <% end %>
+    
     <li>
       <%= rf.film.title %>
       <% if logged_in? %>
+        &nbsp | locuri rezervate: <%= rf.film.rank %> &nbsp
       	<%= link_to 'Delete', deletefilm_path(:id => rf.film.id, :rf_id => rf.id), :method => :delete %>
       <% else %>
         <%= link_to 'Select', reservationnew_path(:id => rf.id) %>

@@ -3,7 +3,7 @@ class ReservationsController < ApplicationController
   	@reservation = Reservation.new
     @film_id = RunningFilm.find(params[:id]).film.id
     @film = Film.find(@film_id)
-  	@rf = RunningFilm.where(:film_id => @film_id)
+  	@rf = RunningFilm.where(:film_id=>@film_id).where("time > ?", Time.now.to_i.to_s)
   end
 
   def new_select_seats
@@ -32,7 +32,18 @@ class ReservationsController < ApplicationController
         @reservation = Reservation.new(user_id: @user.id, running_film_id: params[:reservation_rf_id], seats: params[:reservation_seats].split().map{|a| a.to_i})
        
         if @reservation.save
-          redirect_to reservationshow_path(id: @reservation.id)
+          @film = Film.find(@running_film.film_id)
+          @film.rank += params[:reservation_seats].split().map{|a| a.to_i}.inject(0, :+)
+          print "\n\n"
+          print params[:reservation_seats].split().map{|a| a.to_i}
+          print "\n"
+          print params[:reservation_seats].split().map{|a| a.to_i}.inject(0, :+)
+          print "\n\n"
+          if @film.save
+           redirect_to reservationshow_path(id: @reservation.id)
+          else
+            redirect_to root_url
+          end
         else
           redirect_to root_url
         end

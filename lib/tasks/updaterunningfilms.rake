@@ -1,9 +1,7 @@
-class Film < ActiveRecord::Base
-	has_many :running_films
-	validates :title,  presence: true, length: { maximum: 50 }
-
-	def self.reschedule_films
-	    ordered_four = Film.first(4).sort { |a,b| a.rank <=> b.rank }
+namespace :updaterunningfilms do
+	desc 'update running films'
+	task :update do
+		ordered_four = Film.first(4).sort { |a,b| a.rank <=> b.rank }
 	    top_two = ordered_four.first(2)
 	    number_of_films_left_behind = ordered_four.length - 2
 	    if number_of_films_left_behind < 0
@@ -38,6 +36,5 @@ class Film < ActiveRecord::Base
 	      RunningFilm.all[29].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[5].id})
 	      RunningFilm.all[34].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[5].id})
 	    end
-	end
-	
+	end	
 end
