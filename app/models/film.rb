@@ -39,5 +39,8 @@ class Film < ActiveRecord::Base
 	      RunningFilm.all[34].update_attributes({:seats => Array.new(100){0}, :film_id => Film.all[5].id})
 	    end
 	end
-	
+
+	def self.addfilm
+		Film.create(:title => "Titlu")
+	end 
 end
